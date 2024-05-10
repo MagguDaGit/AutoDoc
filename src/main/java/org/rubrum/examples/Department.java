@@ -1,15 +1,15 @@
 package org.rubrum.examples;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 
 @NodeEntity
-public class Country {
+@Getter
+@Setter
+public class Department extends BaseNode {
     @Property
-    Long id;
-    @Property
-    String name;
-    @Property
-    String code;
+    String location;
 
 }
