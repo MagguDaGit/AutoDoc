@@ -5,6 +5,7 @@ import org.rubrum.dto.NodeDTO;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,6 +20,8 @@ import java.util.regex.Pattern;
 public class MetaDataParser {
 
     public MetaDataParser() {}
+
+    private List<NodeDTO> parsedNodes = new ArrayList<>();
 
     public void parseFile(List<String> fileLines, String fileName) {
         if(Objects.equals(fileName, "MetaDataParser.java")) return;
@@ -43,14 +46,15 @@ public class MetaDataParser {
             }
             i.getAndIncrement();
         }
-        if(node.isValid()) System.out.println(node);
+        if(node.isValid()) parsedNodes.add(node);
     }
 
-
-
+    public List<NodeDTO> getParsedData() {
+        return parsedNodes;
+    }
 
     public void parseFile(File file) throws IOException {
-        parseFile(Files.readAllLines(file.toPath()), file.getName());
+         parseFile(Files.readAllLines(file.toPath()), file.getName());
     }
 
     private boolean isNodeEntity(List<String> fileLines) {
@@ -58,11 +62,11 @@ public class MetaDataParser {
     }
 
     private boolean isPropertyAnnotation(String currentLine) {
-        return currentLine.contains("@Property");
+        return currentLine.contains("@Property") && !currentLine.contains("//") && !currentLine.contains("/*");
     }
 
     private boolean isRelationshipAnnotation(String currentLine) {
-        return currentLine.contains("@Relationship");
+        return currentLine.contains("@Relationship") && !currentLine.contains("//") && !currentLine.contains("/*");
     }
 
     private String getPropertyName(String line) {

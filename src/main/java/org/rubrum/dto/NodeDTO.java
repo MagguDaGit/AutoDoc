@@ -1,7 +1,10 @@
 package org.rubrum.dto;
 
+import lombok.Data;
+
 import java.util.*;
 
+@Data
 public class NodeDTO {
 
 
@@ -40,11 +43,11 @@ public class NodeDTO {
     }
 
     public void addOutgoingRelationship(String relationShipName,String nodeType) {
-        outgoingRelationships.add(new relationship(relationShipName, nodeType));
+        outgoingRelationships.add(new relationship(relationShipName.replaceAll("[^\"]*(\"([^\"]*)\")[^\"]*", "$2"), nodeType));
     }
 
     public void addIncomingRelationship(String relationShipName,String nodeType) {
-        incomingRelationships.add(new relationship(relationShipName, nodeType));
+        incomingRelationships.add(new relationship(relationShipName.replaceAll("[^\"]*(\"([^\"]*)\")[^\"]*", "$2"), nodeType));
     }
 
 
@@ -53,13 +56,4 @@ public class NodeDTO {
     }
 
 
-    @Override
-    public String toString() {
-        return "NodeDTO{" +
-                "name='" + name + '\'' +
-                ", properties=" + properties +
-                ", incomingRelationships=" + incomingRelationships +
-                ", outgoingRelationships=" + outgoingRelationships +
-                '}';
-    }
 }

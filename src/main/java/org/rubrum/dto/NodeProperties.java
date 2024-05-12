@@ -1,7 +1,10 @@
 package org.rubrum.dto;
 
+import lombok.Data;
+
 import java.util.HashMap;
 
+@Data
 public class NodeProperties {
     HashMap<String,String> properties;
 
@@ -13,8 +16,4 @@ public class NodeProperties {
         properties.put(name, type);
     }
 
-    @Override
-    public String toString() {
-        return properties.toString();
-    }
 }
