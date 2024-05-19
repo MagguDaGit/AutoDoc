@@ -1,12 +1,18 @@
 package org.rubrum.dto;
 
 import lombok.Data;
+import org.rubrum.service.MetaDataCollector;
 
 import java.util.*;
 
 @Data
-public class NodeDTO {
+public class NodeDTO implements Comparable<NodeDTO>{
 
+
+    @Override
+    public int compareTo(NodeDTO o) {
+        return o.getName().compareTo(this.name);
+    }
 
     public record relationship(String relationShipName, String nodeType) {}
 

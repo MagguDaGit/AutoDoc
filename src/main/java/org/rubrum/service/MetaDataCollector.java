@@ -9,9 +9,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * responsible for gathering data from @MetaDataParser
@@ -20,7 +18,7 @@ import java.util.Objects;
  * generate documentation
  */
 public class MetaDataCollector {
-    List<NodeDTO> data = new ArrayList<>();
+    SortedSet<NodeDTO> data = new TreeSet<>();
 
     ObjectMapper mapper = new ObjectMapper();
 
@@ -33,7 +31,7 @@ public class MetaDataCollector {
         data.addAll(parser.getParsedData());
     }
 
-    public List<NodeDTO> getCollectedMetadata() {
+    public SortedSet<NodeDTO> getCollectedMetadata() {
         return data;
     }
 
@@ -51,16 +49,18 @@ public class MetaDataCollector {
             if(Objects.requireNonNull(metaDirectory.listFiles()).length == 0)
             metaData = new File(path +"/"+ initialFileName);
             else {
-                double version = 0.0;
+                double latestVersion = 0.0;
                 for (File f : Objects.requireNonNull(metaDirectory.listFiles())) {
                     String[] words = f.getName().replaceAll(".json","").split("_");
                     double fileVersion = Double.parseDouble(words[words.length-1]);
-                    if(fileVersion > version) version = fileVersion + incrementValue;
+                    if(fileVersion > latestVersion) latestVersion = fileVersion;
                 }
-                metaData = new File(path + "/metadata_"+version+".json");
+                double newVersion = (double) Math.round((latestVersion + incrementValue) * 100) / 100;
+                metaData = new File(path + "/metadata_"+newVersion+".json");
             }
-            FileWriter fileWriter = new FileWriter(metaData);
-            fileWriter.write(convertMetadataToJson());
+            try(FileWriter fileWriter = new FileWriter(metaData)) {
+                fileWriter.write(convertMetadataToJson());
+            }
 
         }
         catch (IOException ioException) {

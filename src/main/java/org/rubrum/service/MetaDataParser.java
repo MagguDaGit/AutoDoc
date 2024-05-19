@@ -5,9 +5,7 @@ import org.rubrum.dto.NodeDTO;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,7 +19,7 @@ public class MetaDataParser {
 
     public MetaDataParser() {}
 
-    private List<NodeDTO> parsedNodes = new ArrayList<>();
+    private SortedSet<NodeDTO> parsedNodes = new TreeSet<>();
 
     public void parseFile(List<String> fileLines, String fileName) {
         if(Objects.equals(fileName, "MetaDataParser.java")) return;
@@ -49,7 +47,7 @@ public class MetaDataParser {
         if(node.isValid()) parsedNodes.add(node);
     }
 
-    public List<NodeDTO> getParsedData() {
+    public SortedSet<NodeDTO> getParsedData() {
         return parsedNodes;
     }
 
