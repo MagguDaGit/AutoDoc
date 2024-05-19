@@ -6,6 +6,10 @@ public class Main {
 
     public static void main(String[] args) throws JsonProcessingException {
         System.out.println("Starting AutoDoc CLI....");
+
+
+
+
         MainProcess mainProcess = new MainProcess();
         mainProcess.start();
 
