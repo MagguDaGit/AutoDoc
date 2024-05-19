@@ -1,7 +1,6 @@
 package org.rubrum.dto;
 
 import lombok.Data;
-import org.rubrum.service.MetaDataCollector;
 
 import java.util.*;
 
@@ -17,20 +16,20 @@ public class NodeDTO implements Comparable<NodeDTO>{
     public record relationship(String relationShipName, String nodeType) {}
 
     String name;
-    NodeProperties properties;
+    HashMap<String,String> properties;
 
     List<relationship> incomingRelationships = new ArrayList<>();
     List<relationship> outgoingRelationships = new ArrayList<>();
 
 
     public NodeDTO() {
-        properties = new NodeProperties();
+        properties = new HashMap<>();
 
     }
 
     public NodeDTO(String name) {
         setName(name);
-        properties = new NodeProperties();
+        properties = new HashMap<>();
     }
 
 
@@ -45,7 +44,7 @@ public class NodeDTO implements Comparable<NodeDTO>{
 
 
     public void addProperty(String propertyName, String type) {
-        properties.add(propertyName, type);
+        properties.put(propertyName, type);
     }
 
     public void addOutgoingRelationship(String relationShipName,String nodeType) {
