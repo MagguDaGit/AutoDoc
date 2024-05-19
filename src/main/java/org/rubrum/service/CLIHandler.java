@@ -1,6 +1,8 @@
 package org.rubrum.service;
 
+import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Scanner;
 
 public class CLIHandler {
@@ -26,6 +28,22 @@ public class CLIHandler {
         }
     }
 
+    public double selectGraphVersionToGenerate(DirectoryHandler directoryHandler) {
+        List<Double> versions = directoryHandler.getCurrentMetaDataVersions();
+        System.out.println("Please select the graph version you want to generate a document for: ");
+        for (int i = 0; i < versions.size() ; i++) {
+            System.out.println(i +": " + versions.get(i));
+        }
 
+        try {
+            int option = Integer.parseInt(scanner.nextLine());
+            return versions.get(option);
+        }
+        catch (NumberFormatException | IndexOutOfBoundsException ex) {
+            System.out.println("You need to choose a valid option as listed above");
+            return selectGraphVersionToGenerate(directoryHandler);
+        }
+
+    }
 
 }

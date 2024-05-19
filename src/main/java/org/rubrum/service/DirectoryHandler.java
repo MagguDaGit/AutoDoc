@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class DirectoryHandler {
@@ -27,6 +29,28 @@ public class DirectoryHandler {
 
     public File getMetaDirectory() {
         return new File(getCurrentDirectory() + "/docs/meta");
+    }
+
+
+    public List<Double> getCurrentMetaDataVersions() {
+        List<Double> versions = new ArrayList<>();
+        for (File f: Objects.requireNonNull(getMetaDirectory().listFiles())) {
+            String[] fileName = f.getName().split("_");
+            double version = Double.parseDouble(fileName[fileName.length-1].replaceAll(".json",""));
+            versions.add(version);
+        }
+        return versions;
+    }
+
+
+    public File getMetaDataFileByVersion(double versionToFind) {
+        for (File f: Objects.requireNonNull(getMetaDirectory().listFiles())) {
+            String[] fileName = f.getName().split("_");
+            double version = Double.parseDouble(fileName[fileName.length-1].replaceAll(".json",""));
+            if(version == versionToFind) return  f;
+        }
+        // If this point is reached we did not a file with corresponding version number.
+        return null;
     }
 
 
